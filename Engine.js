@@ -34,8 +34,8 @@ window.onresize=function(){
 
 var moveTimer;
 function move(event){
-	var xPos = event.clientX;
-	var yPos = event.clientY;
+	var xPos = event.pageX;
+	var yPos = event.pageY;
 
 	var d = document.getElementById("debug");
 	d.innerHTML = xPos + "  " + yPos;
@@ -52,70 +52,26 @@ function move(event){
 
 var dirX;
 var dirY;
+var amount = 0.00001;
 function moveMainChar(x, y){
-	var yPerX = getRelativeValue(x, y);
-	
+
+	mainChar.centerX = mainChar.centerX + (x - mainChar.centerX) * amount;
+	mainChar.centerY = mainChar.centerY + (y - mainChar.centerY) * amount;
+	amount += 0.00001;
+	if (amount > 0.5){
+		amount = 0.00001;
+	}
+
 	var d = document.getElementById("debug");
-	d.innerHTML = yPerX;
-
-	if (mainChar.x < x){
-		dirX = 1;
-	} else if (mainChar.x > x){
-		dirX = -1;
-	} else {
-		dirX = 0;
-	}
-
-	if (mainChar.y < y){
-		dirY = yPerX * 1;
-	} else if (mainChar.y > y){
-		dirY = yPerX * -1;
-	} else {
-		dirY = 0;
-	}
-
-	if (dirX > 1){
-		dirX = 1;
-	}
-
-	if (dirX < -1){
-		dirX = -1;
-	}
-
-	if (dirY > 1){
-		dirY = 1;
-	}
-
-	if (dirY < -1){
-		dirY = -1;
-	}
-
-	mainChar.x += dirX;
-	mainChar.y += dirY;
-
+	d.innerHTML = "MainChar X: " + mainChar.centerX + " MainChar Y: " + mainChar.centerY;
 	redraw();
-}
-
-function getRelativeValue(x, y){
-
-	if (mainChar.x > x && mainChar.y > y){
-		return ((mainChar.y - y) / (mainChar.x - x));
-	} else if (mainChar.x > x && mainChar.y < y){
-		return ((y - mainChar.y) / (mainChar.x - x));
-	} else if (mainChar.x < x && mainChar.y > y){
-		return ((mainChar.y - y) / (x - mainChar.x));
-	} else if (mainChar.x < x && mainChar.y < y){
-		return ((y - mainChar.y) / (x - mainChar.x));
-	} else {
-		return 1;
-	}
 }
 
 function redraw(){
 	ctx.clearRect(0, 0, width, height);
 
-	var bgOffsetX = mainChar.x - 400;
-	var bgOffsetY = mainChar.y - 400;
+	var bgOffsetX = mainChar.centerX - 400;
+	var bgOffsetY = mainChar.centerY - 400;
 
 	bgOffsetX < 0 ? bgOffsetX = 0 : bgOffsetX = bgOffsetX;
 	bgOffsetY < 0 ? bgOffsetY = 0 : bgOffsetY = bgOffsetY;
@@ -123,8 +79,8 @@ function redraw(){
 	ctx.drawImage(background, bgOffsetX, bgOffsetY, width, height, 0, 0, width, height);
 
 	ctx.drawImage(mainChar.image,
-                  mainChar.x,
-                  mainChar.y);
+                  mainChar.centerX,
+                  mainChar.centerY);
 }
 
 function checkCollision(img1, img2){
