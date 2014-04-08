@@ -2,9 +2,15 @@ var background = new Image();
 background.src = "big_pic.jpg";
 
 var mainCharacterImage = new Image();
-mainCharacterImage.src = "mario.jpg";
+mainCharacterImage.src = "mario.png";
+
+var houseImage = new Image();
+houseImage.src = "house.png";
 
 var mainChar = new gameObject(400, 400, mainCharacterImage);
+var house = new gameObject(500, 500, houseImage);
+var house2 = new gameObject(800, 500, houseImage);
+var house3 = new gameObject(1200, 500, houseImage);
 
 var startX = 50;
 var startY = 50;
@@ -34,11 +40,8 @@ window.onresize=function(){
 
 var moveTimer;
 function move(event){
-	var xPos = event.clientX;
-	var yPos = event.clientY;
-
-	var d = document.getElementById("debug");
-	d.innerHTML = xPos + "  " + yPos;
+	var xPos = event.pageX;
+	var yPos = event.pageY;
 
 	clearInterval(moveTimer);
 	moveTimer = 0;
@@ -52,87 +55,69 @@ function move(event){
 
 var dirX;
 var dirY;
+var amount = 0.00001;
+var previousX;
+var previousY;
 function moveMainChar(x, y){
-	var yPerX = getRelativeValue(x, y);
-	
-	var d = document.getElementById("debug");
-	d.innerHTML = yPerX;
-
-	if (mainChar.x < x){
-		dirX = 1;
-	} else if (mainChar.x > x){
-		dirX = -1;
-	} else {
-		dirX = 0;
+	previousX = mainChar.x;
+	previousY = mainChar.y;
+	mainChar.x = mainChar.x + (x - mainChar.x) * amount;
+	mainChar.y = mainChar.y + (y - mainChar.y) * amount;
+	amount += 0.00001;
+	if (amount > 0.01){
+		amount = 0.01;
 	}
 
-	if (mainChar.y < y){
-		dirY = yPerX * 1;
-	} else if (mainChar.y > y){
-		dirY = yPerX * -1;
-	} else {
-		dirY = 0;
-	}
-
-	if (dirX > 1){
-		dirX = 1;
-	}
-
-	if (dirX < -1){
-		dirX = -1;
-	}
-
-	if (dirY > 1){
-		dirY = 1;
-	}
-
-	if (dirY < -1){
-		dirY = -1;
-	}
-
-	mainChar.x += dirX;
-	mainChar.y += dirY;
-
+	//var d = document.getElementById("debug");
+	//d.innerHTML = "MainChar X: " + mainChar.centerX + " MainChar Y: " + mainChar.centerY;
 	redraw();
 }
 
-function getRelativeValue(x, y){
-
-	if (mainChar.x > x && mainChar.y > y){
-		return ((mainChar.y - y) / (mainChar.x - x));
-	} else if (mainChar.x > x && mainChar.y < y){
-		return ((y - mainChar.y) / (mainChar.x - x));
-	} else if (mainChar.x < x && mainChar.y > y){
-		return ((mainChar.y - y) / (x - mainChar.x));
-	} else if (mainChar.x < x && mainChar.y < y){
-		return ((y - mainChar.y) / (x - mainChar.x));
-	} else {
-		return 1;
-	}
-}
-
+var bgOffsetX;
+var bgOffsetY;
 function redraw(){
 	ctx.clearRect(0, 0, width, height);
 
-	var bgOffsetX = mainChar.x - 400;
-	var bgOffsetY = mainChar.y - 400;
+	bgOffsetX = mainChar.x - 400;
+	bgOffsetY = mainChar.y - 400;
 
 	bgOffsetX < 0 ? bgOffsetX = 0 : bgOffsetX = bgOffsetX;
 	bgOffsetY < 0 ? bgOffsetY = 0 : bgOffsetY = bgOffsetY;
 
 	ctx.drawImage(background, bgOffsetX, bgOffsetY, width, height, 0, 0, width, height);
 
+	ctx.drawImage(house.image,
+                  house.x - bgOffsetX,
+                  house.y - bgOffsetY);
+
+	ctx.drawImage(house2.image,
+                  house2.x - bgOffsetX,
+                  house2.y - bgOffsetY);
+
+	ctx.drawImage(house3.image,
+                  house3.x - bgOffsetX,
+                  house3.y - bgOffsetY);
+
 	ctx.drawImage(mainChar.image,
                   mainChar.x,
                   mainChar.y);
+
+	if (checkCollision(mainChar, house)
+		|| checkCollision(mainChar, house2)
+		|| checkCollision(mainChar, house3)){
+		mainChar.x = previousX;
+		mainChar.y = previousY;
+		//var d = document.getElementById("debug");
+		//d.innerHTML = "Char X: " + mainChar.x + " Char y: " + mainChar.y + " Hero width: " + mainChar.image.width;
+	}
 }
 
-function checkCollision(img1, img2){
+function checkCollision(hero, object){
 
-    if ((img1.x + img1.width) > img2.x 
-      && img1.x < (img2.x + img2.width)
-      && (img1.y + img1.width) > img2.y
-      && img1.y < (img2.y + img2.height)){
+    if ((hero.x + hero.image.width) > object.x - bgOffsetX
+         && hero.x < ((object.x - bgOffsetX) + object.image.width)
+         && (hero.y + hero.image.width) > object.y - bgOffsetY
+         && hero.y < ((object.y - bgOffsetY) + object.image.height)){
       return true;
     } else {
       return false;
