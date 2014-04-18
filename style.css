@@ -1,9 +1,22 @@
-#1{
-  background-color:red;
+#1 {
+    background-color: red;
 }
 
-canvas{
-  margin-left:auto;
-  margin-right:auto;  
-  width:95%;
+canvas {
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
 }
+
+div.contentDiv {
+    margin: 0px;
+    background-color: green;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    visibility: hidden;
+}
+
+    div.contentDiv p.exit {
+        color: red;
+    }

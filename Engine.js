@@ -12,15 +12,23 @@ var house = new gameObject(500, 500, houseImage);
 var house2 = new gameObject(800, 500, houseImage);
 var house3 = new gameObject(1200, 500, houseImage);
 
+var objectList = [];
+
+objectList.push(house);
+objectList.push(house2);
+objectList.push(house3);
+
 var startX = 50;
 var startY = 50;
 
 var c;
 var ctx;
 
-background.onload=function(){
-	c = document.getElementById("viewport");
-	ctx = c.getContext("2d");
+var pause = false;
+
+background.onload = function () {
+    c = document.getElementById("viewport");
+    ctx = c.getContext("2d");
     width = window.innerWidth;
     height = window.innerHeight;
     document.getElementsByTagName("canvas")[0].setAttribute("width", width);
@@ -29,7 +37,7 @@ background.onload=function(){
     ctx.drawImage(mainCharacterImage, mainChar.x, mainChar.y);
 }
 
-window.onresize=function(){
+window.onresize = function () {
     ctx.clearRect(0, 0, width, height);
     width = window.innerWidth;
     height = window.innerHeight;
@@ -39,18 +47,20 @@ window.onresize=function(){
 }
 
 var moveTimer;
-function move(event){
-	var xPos = event.pageX;
-	var yPos = event.pageY;
+function move(event) {
 
-	clearInterval(moveTimer);
-	moveTimer = 0;
-	if (!moveTimer){
-		moveTimer = setInterval(
-			function(){
-				moveMainChar(xPos, yPos)
-			}, 5);
-	}
+    var xPos = event.pageX;
+    var yPos = event.pageY;
+
+    clearInterval(moveTimer);
+    moveTimer = 0;
+    if (!moveTimer) {
+        moveTimer = setInterval(
+            function () {
+                moveMainChar(xPos, yPos)
+            }, 5);
+    }
+
 }
 
 var dirX;
@@ -58,68 +68,89 @@ var dirY;
 var amount = 0.00001;
 var previousX;
 var previousY;
-function moveMainChar(x, y){
-	previousX = mainChar.x;
-	previousY = mainChar.y;
-	mainChar.x = mainChar.x + (x - mainChar.x) * amount;
-	mainChar.y = mainChar.y + (y - mainChar.y) * amount;
-	amount += 0.00001;
-	if (amount > 0.01){
-		amount = 0.01;
-	}
-
-	//var d = document.getElementById("debug");
-	//d.innerHTML = "MainChar X: " + mainChar.centerX + " MainChar Y: " + mainChar.centerY;
-	redraw();
+function moveMainChar(x, y) {
+    if (!pause) {
+        previousX = mainChar.x;
+        previousY = mainChar.y;
+        mainChar.x = mainChar.x + (x - mainChar.x) * amount;
+        mainChar.y = mainChar.y + (y - mainChar.y) * amount;
+        amount += 0.00001;
+        if (amount > 0.01) {
+            amount = 0.01;
+        }
+    }
+    //var d = document.getElementById("debug");
+    //d.innerHTML = "MainChar X: " + mainChar.centerX + " MainChar Y: " + mainChar.centerY;
+    redraw();
 }
 
 var bgOffsetX;
 var bgOffsetY;
-function redraw(){
-	ctx.clearRect(0, 0, width, height);
+function redraw() {
+    ctx.clearRect(0, 0, width, height);
 
-	bgOffsetX = mainChar.x - 400;
-	bgOffsetY = mainChar.y - 400;
+    bgOffsetX = mainChar.x - 400;
+    bgOffsetY = mainChar.y - 400;
 
-	bgOffsetX < 0 ? bgOffsetX = 0 : bgOffsetX = bgOffsetX;
-	bgOffsetY < 0 ? bgOffsetY = 0 : bgOffsetY = bgOffsetY;
+    bgOffsetX < 0 ? bgOffsetX = 0 : bgOffsetX = bgOffsetX;
+    bgOffsetY < 0 ? bgOffsetY = 0 : bgOffsetY = bgOffsetY;
 
-	ctx.drawImage(background, bgOffsetX, bgOffsetY, width, height, 0, 0, width, height);
+    ctx.drawImage(background, bgOffsetX, bgOffsetY, width, height, 0, 0, width, height);
 
-	ctx.drawImage(house.image,
+    ctx.drawImage(house.image,
                   house.x - bgOffsetX,
                   house.y - bgOffsetY);
 
-	ctx.drawImage(house2.image,
+    ctx.drawImage(house2.image,
                   house2.x - bgOffsetX,
                   house2.y - bgOffsetY);
 
-	ctx.drawImage(house3.image,
+    ctx.drawImage(house3.image,
                   house3.x - bgOffsetX,
                   house3.y - bgOffsetY);
 
-	ctx.drawImage(mainChar.image,
+    ctx.drawImage(mainChar.image,
                   mainChar.x,
                   mainChar.y);
 
-	if (checkCollision(mainChar, house)
+    if (checkCollision(mainChar, house)
 		|| checkCollision(mainChar, house2)
-		|| checkCollision(mainChar, house3)){
-		mainChar.x = previousX;
-		mainChar.y = previousY;
-		//var d = document.getElementById("debug");
-		//d.innerHTML = "Char X: " + mainChar.x + " Char y: " + mainChar.y + " Hero width: " + mainChar.image.width;
-	}
+		|| checkCollision(mainChar, house3)) {
+        mainChar.x = previousX;
+        mainChar.y = previousY;
+        //var d = document.getElementById("debug");
+        //d.innerHTML = "Char X: " + mainChar.x + " Char y: " + mainChar.y + " Hero width: " + mainChar.image.width;
+    }
 }
 
-function checkCollision(hero, object){
+function checkCollision(hero, object) {
 
     if ((hero.x + hero.image.width) > object.x - bgOffsetX
          && hero.x < ((object.x - bgOffsetX) + object.image.width)
          && (hero.y + hero.image.width) > object.y - bgOffsetY
-         && hero.y < ((object.y - bgOffsetY) + object.image.height)){
-      return true;
+         && hero.y < ((object.y - bgOffsetY) + object.image.height)) {
+        return true;
     } else {
-      return false;
+        return false;
     }
+}
+
+function checkClickOnObjects(event) {
+    for (var i = 0; i < objectList.length ; i++) {
+        var object = objectList[i];
+        if ((event.pageX) > object.x - bgOffsetX
+         && event.pageX < ((object.x - bgOffsetX) + object.image.width)
+         && (event.pageY) > object.y - bgOffsetY
+         && event.pageY < ((object.y - bgOffsetY) + object.image.height)) {
+            document.getElementById('firstContent').style.visibility = 'visible';
+            pause = true;
+        }
+    }
+}
+
+function hideContent(event) {
+    var source = event.target || event.srcElement;
+    alert(source);
+    source.parentNode.style.visibility = 'hidden';
+    pause = false;
 }
