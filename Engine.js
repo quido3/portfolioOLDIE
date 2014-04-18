@@ -150,7 +150,6 @@ function checkClickOnObjects(event) {
 
 function hideContent(event) {
     var source = event.target || event.srcElement;
-    alert(source);
-    source.parentNode.style.visibility = 'hidden';
+    source.parentNode.parentNode.style.visibility = 'hidden';
     pause = false;
 }
