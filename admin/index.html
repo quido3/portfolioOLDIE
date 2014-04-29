@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Portfolio - admin</title>
+		<meta charset="UTF-8">
+		<link href="styles.css" type="text/css" rel="stylesheet" title="" media="screen" />
+	</head>
+	<body>
+		<div id="page">
+		
+			<div id="navi">
+				<li><a href="index.html">Index</a></li>
+				<li><a href="contacts.php">Contacts</a></li>
+				<li><a href="statistics.html">Statictics</a></li>
+			</div>
+			
+			<div id="content">
+				<p>
+				Dynaamisen verkkopalvelun toteutusprojekti >>harjoitustyön kuvaus
+Petri Heliniemi, Pekka Yliruusi, Anne-Mari Sainio 12.3.2014
+Sisällys
+•	Johdanto
+•	Toteutus yleisesti
+•	Projektisuunnitelma
+•	Www-sovellus ja sen vaatimukset
+•	Tekninen dokumentaatio
+•	Loppuraportti
+•	Palautus
+•	Harjoitustön arvioinnin kriteerit
+
+Johdanto
+4-AOT7-kurssin harjoitustyönä toteutetaan tietokantapohjainen  ja xml-pohjainen WWW-sovellus. Ennen sovelluksen tekoa tehdään projektista projektisuunnitelma. Näiden lisäksi sovelluksesta palautetaan teknisen dokumentaation ohella omaan arviointiin liittyvä loppudokumentaatio. Työ tehdään kahden hengen ryhmissä
+Harjoitustyön tavoitteena on kurssilla esiteltyjen ideoiden ja tekniikoiden opiskelu, taitojen oma-aloitteinen kehittäminen, soveltaminen ja uuden opiskelu. Esimerkiksi on mahdollista käyttää javascriptiä harjoitustyössä. Harjoitustyön aiheen voi valita (kohtuullisen) vapaasti. Aiheen valitsemisen vapauden tarkoituksena on motivoida tekemään harjoitustyönään jotain sellaista, mikä on omasta näkökulmasta järkevää. On hyvä muistaa, että vapaus valita harjoitustyönsä aihe ja sisältö itse tuo muassaan myös vastuuta. Oppimisen kannalta harjoitustyöhön ja sen tekemisen eri vaiheisiin kannattaa suhtautua vakavissaan.
+Toteutus yleisesti
+Harjoitustyön tekeminen voidaan jakaa seuraavasti:
+Vaiheet	Työn tuloksena
+1. Aiheen keksiminen	
+2. Projektin suunnittelu	Projektisuunnitelma
+3. Sovelluksen toteutus	WWW-sovellus ja tekninen dokumentaatio ja työn esittely
+4. Oma arviointi	Loppuraportti
+
+ 
+
+Kaikki tuotetut dokumentit oikoluetaan tekstinkäsittelyohjelman oikolukijalla ennen palauttamista. Selkeitä yhdys sana virheitä ja / tai kirotusvirheitä ei dokumenteissa sallita. Dokumentit palautetaan pdf  tai rtf-formaatissa. Doc-tiedostomuoto ei siis kelpaa! Jokainen ryhmä kirjaa ylös harjoitustyöhön tekemiään työtunteja (kuka, mitä, koska, kuinka monta tuntia). Työtunnit listataan taulukkomuotoisesti loppuraportissa.
+Projektisuunnitelma
+Projektisuunnitelman tarkoituksena on kuvata projektin tarkoitus ja vaiheet kokonaisuudessaan mahdollisimman yksityiskohtaisesti sekä vastuualueet kullekin projektityöntekijälle.
+Käytä pohjana projektisuunnitelmapohja (Google Drive) 
+-linkistä löytyvää tiedostoa.
+WWW-sovellukset
+Harjoitustyön www-sovelluksesta vaaditaan seuraavia ominaisuuksia:
+•	Tietokantapohjainen WWW-sovellus (PHP5 + MySQL)
+•	Sivusto on kaikilta osin validia HTML5/XHTML Strictiä. Ulkoasu viimeistellään CSS-tekniikkaa käyttäen. CSS-tiedostojen on oltava myös valideja.
+•	Tietokantaan pitää kohdistaa hakujen lisäksi myös päivityksiä (update, insert ja/tai delete)
+•	WWW-sovellus palautetaan keskustelupalstalle pakattuna hakemistona (zip). Tämän lisäksi viestissä kerrotaan, missä url:ssä sovellus on toiminnassa.
+
+Mikäli sovelluksessa käytetään käyttäjän tunnistamista, käytetään tunnuksena opiskelijoiden etunimiä (pienellä kirjoitettuna) ja salasanoina opiskelijoiden opiskelijanumeroita, admin-sivulle pääsee siis käyttämällä kahta tunnusta. admin/index.php kautta päästään admin-sivustoon.
+
+Palautettavan WWW-sovellusten tiedostorakenne on alla olevan kaltainen. Kaikkia hakemistoja ei ole pakollista tehdä, jos sovellus ei kyseistä toiminnallisuutta käytä. Jos et esimerkiksi käytä sovelluksessasi itsetehtyjä luokkia (class), et tarvitse class/ hakemistoa. 
+dm03-project-sukunimi1-sukunimi2
+  |
+•	+--app/
+•	|  | index.php                          // Aloitussivu
+•	|  | foo.php                            // Muita sivuja                       
+•	|  | bar.php
+•	|  | ...
+•	|  +--xml/                              // XML-osuuteen liittyvät tiedostot
+•	|  |  | news.xml                        // Rss-tiedosto
+•	|  |  | news_to_xhtml.xslt              // XSLT-transformaatio tiedosto
+•	|  |  | news_to_xhtml.php               // XSLT-transformaatio php:lla (tämän saa tehdä myös erillisenä funktiona [lib/functions.php])
+•	|  |  | ...
+•	|  +--admin                             // Suojattu hake-misto (htaccess)
+•	|  |    | index.php                     // Rss-tiedoston muokkaamiseen tarkoitetut toiminnallisuudet
+•	|  |    | ...
+•	|  +--css/                              // Tyylitiedostot
+•	|  |  | foo.css
+•	|  |  | ...
+•	|  +--images/                           // Kuvat
+•	|  |  | foo.jpg
+•	|  |  | ...
+•	|  +--lib/                              // Funktiot
+•	|  |  | functions.php
+•	|  +--conf/                             // Konfiguraatio-tiedostot
+•	|  |  | conf.php
+•	|  +--class/                            // Luokat
+•	|     | database.php
+•	|     | ...
+•	+--doc/                                 // Dokumentaatio
+•	   | synopsis.pdf
+•	   | projektisuunnitelma.pdf
+•	   | tekninendokumentaatio.pdf
+•	   | loppuraportti.pdf
+•	
+
+Jos projektityötyö ei täytä ylläolevia vaatimuksia, se hylätään ja korjausaikaa annetaan viikko. Jos projektityötä ei saada viikon aikana asianmukaiseen kuntoon seurauksena on projektin hylkääminen.
+Tekninen dokumentaatio
+Tekninen dokumentaatio sisältää tehdyn sovelluksen yleisarkkitehtuurin ja tietokantakuvauksen. Dokumentaatiossa käytetään seuraavaa pohjaa: Tekninendokumentaatio.doc
+Loppuraportti
+Projektin loppuraportti sisältää projektiryhmän omaa arviointia työstään ja kurssista. Tämän lisäksi raportti sisältää yksityiskohtaisen taulukon tehdyistä työtunneista.
+Käytä pohjana: loppuraportti.doc
+Palautus
+Kaikkien vaiheiden tuotokset palautetaan "Projektityön palautus"-nimiselle keskustelupalstalle. Kukin ryhmä kirjoittaa keskustelupalstalle viestin, jonka alle projektityön tuotoksia palautetaan. Keskustelupalstan viestin otsikkona käytetään projektityön nimeä, jonka kukin ryhmä päättää itse. Lopullinen viestiketju voi siis näyttää esimerkiksi seuraavalta (otettuna muut mahdolliset kommentoinnit pois):
+Pirkkalan Pingviinien kotisivu 
+|
++-- Projektisuunnitelma              // liitteenä projekti-suunnitelma
+|
++-- Valmis sovellus                  // liitteenä zip-pakattu sovellus. Paketti sisältää
+projektisuunnitelman ohella myös teknisen dokumentaation ja loppuraportin (doc-hakemisto)
+
+Projektityön arvioinnin kriteerit
+Projekti arvioidaan asteikolla 0-5 seuraavin painoarvoin:
+Arvosteltava aihe	Painoarvo	Arvostelu sisältää mm.
+Vaativuus	40%	Sivuston laajuus, dynaamisuus
+Tekninen 
+toteutus	30%	Koodin selkeys, valitut algoritmit/funktiot, 
+tietokantasuunnittelun ja toteutuksen laatu
+Dokumentaatio	15%	Sisällön taso, selkeys, kielioppivirheiden 
+vähyys
+Ulkoasu, viimeistely	15%	Yleinen ulkoasu, kuvien käsittely/optimointi
+
+
+				</p>
+		
+			</div>
+			
+			<div id="footer">
+				<p>d,jshafkjs dfdkjfghkjdsf dfkjsdhfkjdhs</p>
+			</div>
+			
+		</div>
+	</body>
+</html>
