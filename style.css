@@ -35,6 +35,58 @@ div.contentDiv {
         border-width: 10px;
     }
 
+#contactContent {
+    margin: 0px;
+    position: absolute;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+    #contactContent div.contact {
+        position: fixed;
+        width: 60%;
+        height: 85%;
+        background-color: gray;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        text-align: center;
+        border: solid;
+        border-color: blue;
+        border-width: 10px;
+    }
+
+#aboutContent {
+    margin: 0px;
+    position: absolute;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+    #aboutContent div.about {
+        position: fixed;
+        width: 60%;
+        height: 85%;
+        background-color: gray;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        text-align: center;
+        border: solid;
+        border-color: red;
+        border-width: 10px;
+    }
+
 .exitBtn {
     float: right;
     -moz-box-shadow: inset 0px 1px 0px 0px #fbafe3;
