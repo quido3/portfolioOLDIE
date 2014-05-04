@@ -8,9 +8,9 @@ var houseImage = new Image();
 houseImage.src = "house.png";
 
 var mainChar = new gameObject(400, 400, mainCharacterImage);
-var house = new gameObject(500, 500, houseImage);
-var house2 = new gameObject(800, 500, houseImage);
-var house3 = new gameObject(1200, 500, houseImage);
+var house = new gameObject(500, 500, houseImage, 'firstContent');
+var house2 = new gameObject(800, 500, houseImage, 'contactContent');
+var house3 = new gameObject(1200, 500, houseImage, 'aboutContent');
 
 var objectList = [];
 
@@ -142,7 +142,7 @@ function checkClickOnObjects(event) {
          && event.pageX < ((object.x - bgOffsetX) + object.image.width)
          && (event.pageY) > object.y - bgOffsetY
          && event.pageY < ((object.y - bgOffsetY) + object.image.height)) {
-            document.getElementById('firstContent').style.visibility = 'visible';
+            document.getElementById(object.content).style.visibility = 'visible';
             pause = true;
         }
     }

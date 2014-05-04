@@ -1,4 +1,4 @@
-function gameObject(x, y, img) {
+function gameObject(x, y, img, c) {
     this.image = img;
     this.x = x;
     this.y = y;
@@ -6,5 +6,6 @@ function gameObject(x, y, img) {
     this.centerY = y + (img.height / 2);
     this.width = img.width;
     this.height = img.height;
+    this.content = c;
     return this;
 }
