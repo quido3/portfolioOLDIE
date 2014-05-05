@@ -1,22 +1,21 @@
 var background = new Image();
-background.src = "big_pic.jpg";
+background.src = "grass.png";
 
 var mainCharacterImage = new Image();
 mainCharacterImage.src = "mario.png";
 
-var houseImage = new Image();
-houseImage.src = "house.png";
+var mill = new Image();
+mill.src = "mylly.png";
+var millDoor = new Image();
+millDoor.src = "mylly_ovi.png";
+
+var talo = new Image();
+talo.src = "talo.png";
+var taloOvi = new Image();
+taloOvi.src = "talo_ovi.png";
 
 var mainChar = new gameObject(400, 400, mainCharacterImage);
-var house = new gameObject(500, 500, houseImage);
-var house2 = new gameObject(800, 500, houseImage);
-var house3 = new gameObject(1200, 500, houseImage);
-
-var objectList = [];
-
-objectList.push(house);
-objectList.push(house2);
-objectList.push(house3);
+var objectContainer = new Array();
 
 var startX = 50;
 var startY = 50;
@@ -26,18 +25,34 @@ var ctx;
 
 var pause = false;
 
-background.onload = function () {
-    c = document.getElementById("viewport");
-    ctx = c.getContext("2d");
+background.onload=function(){
+
+	objectContainer[0] = new gameObject(500
+									    , 0
+									    , mill
+									    , millDoor
+									    , (mill.width / 2) - (millDoor.width / 2)
+									    , mill.height - millDoor.height);
+
+	objectContainer[1] = new gameObject(500
+										, 750
+										, talo
+										, taloOvi
+										, (talo.width / 2) - (taloOvi.width / 2)
+										, talo.height - taloOvi.height);
+
+	c = document.getElementById("viewport");
+	ctx = c.getContext("2d");
     width = window.innerWidth;
     height = window.innerHeight;
     document.getElementsByTagName("canvas")[0].setAttribute("width", width);
     document.getElementsByTagName("canvas")[0].setAttribute("height", height);
     ctx.drawImage(background, startX, startY, width, height, 0, 0, width, height);
     ctx.drawImage(mainCharacterImage, mainChar.x, mainChar.y);
+    redraw();
 }
 
-window.onresize = function () {
+window.onresize=function(){
     ctx.clearRect(0, 0, width, height);
     width = window.innerWidth;
     height = window.innerHeight;
@@ -47,104 +62,150 @@ window.onresize = function () {
 }
 
 var moveTimer;
-function move(event) {
+function move(event){
+	var xPos = event.pageX;
+	var yPos = event.pageY;
 
-    var xPos = event.pageX;
-    var yPos = event.pageY;
-
-    clearInterval(moveTimer);
-    moveTimer = 0;
-    if (!moveTimer) {
-        moveTimer = setInterval(
-            function () {
-                moveMainChar(xPos, yPos)
-            }, 5);
-    }
-
+	clearInterval(moveTimer);
+	moveTimer = 0;
+	if (!moveTimer){
+		moveTimer = setInterval(
+			function(){
+				moveMainChar(xPos, yPos)
+			}, 5);
+	}
 }
 
 var dirX;
 var dirY;
-var amount = 0.00001;
+var amount = 0.01;
 var previousX;
 var previousY;
-function moveMainChar(x, y) {
-    if (!pause) {
-        previousX = mainChar.x;
-        previousY = mainChar.y;
-        mainChar.x = mainChar.x + (x - mainChar.x) * amount;
-        mainChar.y = mainChar.y + (y - mainChar.y) * amount;
-        amount += 0.00001;
-        if (amount > 0.01) {
-            amount = 0.01;
-        }
-    }
-    //var d = document.getElementById("debug");
-    //d.innerHTML = "MainChar X: " + mainChar.centerX + " MainChar Y: " + mainChar.centerY;
-    redraw();
+var intervalX;
+var intervalY;
+function moveMainChar(x, y){
+	if (!pause){
+		previousX = mainChar.x;
+		previousY = mainChar.y;
+
+		mainChar.x += (x - mainChar.x) * amount;
+		mainChar.y += (y - mainChar.y) * amount;
+
+		redraw(x, y);
+	}
 }
 
-var bgOffsetX;
-var bgOffsetY;
-function redraw() {
-    ctx.clearRect(0, 0, width, height);
+var bgOffsetX = 0;
+var bgOffsetY = 0;
+var scrollThreshold = 200;
+function redraw(x, y){
+	ctx.clearRect(0, 0, width, height);
 
-    bgOffsetX = mainChar.x - 400;
-    bgOffsetY = mainChar.y - 400;
+	scrollBackground();
 
-    bgOffsetX < 0 ? bgOffsetX = 0 : bgOffsetX = bgOffsetX;
-    bgOffsetY < 0 ? bgOffsetY = 0 : bgOffsetY = bgOffsetY;
+	bgOffsetX < 0 ? bgOffsetX = 0 : bgOffsetX = bgOffsetX;
+	bgOffsetY < 0 ? bgOffsetY = 0 : bgOffsetY = bgOffsetY;
 
-    ctx.drawImage(background, bgOffsetX, bgOffsetY, width, height, 0, 0, width, height);
+	ctx.drawImage(background, bgOffsetX, bgOffsetY, width, height, 0, 0, width, height);
 
-    ctx.drawImage(house.image,
-                  house.x - bgOffsetX,
-                  house.y - bgOffsetY);
+	for (var i = 0; i < objectContainer.length; i++){
+		var temp = objectContainer[i];
+		drawObjectImage(temp);
+		drawObjectHitbox(temp);
 
-    ctx.drawImage(house2.image,
-                  house2.x - bgOffsetX,
-                  house2.y - bgOffsetY);
+		if (checkHitboxCollision(mainChar, temp)){
+			// DO SOMETHING	
+		}
 
-    ctx.drawImage(house3.image,
-                  house3.x - bgOffsetX,
-                  house3.y - bgOffsetY);
+		ctx.beginPath();
+		ctx.moveTo(temp.bBoxX - bgOffsetX,
+				   temp.bBoxY - bgOffsetY);
+		ctx.lineTo(temp.bBoxX + temp.bBoxWidth - bgOffsetX,
+				   temp.bBoxY - bgOffsetY);
+		ctx.lineTo(temp.bBoxX + temp.bBoxWidth - bgOffsetX,
+				   temp.bBoxY + temp.bBoxHeight - bgOffsetY);
+		ctx.lineTo(temp.bBoxX - bgOffsetX,
+				   temp.bBoxY + temp.bBoxHeight - bgOffsetY);
+		ctx.lineTo(temp.bBoxX - bgOffsetX,
+				   temp.bBoxY - bgOffsetY);
+		ctx.stroke();
+	}
 
-    ctx.drawImage(mainChar.image,
+	ctx.drawImage(mainChar.image,
                   mainChar.x,
                   mainChar.y);
 
-    if (checkCollision(mainChar, house)
-		|| checkCollision(mainChar, house2)
-		|| checkCollision(mainChar, house3)) {
-        mainChar.x = previousX;
-        mainChar.y = previousY;
-        //var d = document.getElementById("debug");
-        //d.innerHTML = "Char X: " + mainChar.x + " Char y: " + mainChar.y + " Hero width: " + mainChar.image.width;
-    }
+	for (var i = 0; i < objectContainer.length; i++){
+		if (checkCollision(mainChar, objectContainer[i])){
+			mainChar.x = previousX;
+			mainChar.y = previousY;
+		}
+	}
 }
 
-function checkCollision(hero, object) {
+function scrollBackground(){
+	if ((mainChar.x + mainChar.width) > (width - scrollThreshold)){
+		bgOffsetX++;
+	} else if (mainChar.x < scrollThreshold){
+		bgOffsetX--;
+	}
+
+	if ((mainChar.y + mainChar.height) > (height - scrollThreshold)){
+		bgOffsetY++;
+	} else if (mainChar.y < scrollThreshold) {
+		bgOffsetY--;
+	}
+}
+
+function drawObjectImage(object){
+	ctx.drawImage(object.image, 
+				  object.x - bgOffsetX,
+				  object.y - bgOffsetY);
+}
+
+function drawObjectHitbox(object){
+	ctx.drawImage(object.hitbox,
+				  object.hitboxX - bgOffsetX,
+				  object.hitboxY - bgOffsetY);
+}
+
+function checkCollision(hero, object){
 
     if ((hero.x + hero.image.width) > object.x - bgOffsetX
          && hero.x < ((object.x - bgOffsetX) + object.image.width)
          && (hero.y + hero.image.width) > object.y - bgOffsetY
-         && hero.y < ((object.y - bgOffsetY) + object.image.height)) {
-        return true;
+         && hero.y < ((object.y - bgOffsetY) + object.image.height)){
+      	return true;
     } else {
-        return false;
+      return false;
+    }
+}
+
+function checkHitboxCollision(hero, object){
+
+	if ((hero.x + hero.image.width) > (object.bBoxX - bgOffsetX)
+         && hero.x < ((object.bBoxX - bgOffsetX) + object.bBoxWidth)
+         && (hero.y + hero.image.width) > object.bBoxY - bgOffsetY
+         && hero.y < ((object.bBoxY - bgOffsetY) + object.bBoxHeight)){
+      return true;
+    } else {
+      return false;
     }
 }
 
 function checkClickOnObjects(event) {
-    for (var i = 0; i < objectList.length ; i++) {
-        var object = objectList[i];
-        if ((event.pageX) > object.x - bgOffsetX
-         && event.pageX < ((object.x - bgOffsetX) + object.image.width)
-         && (event.pageY) > object.y - bgOffsetY
-         && event.pageY < ((object.y - bgOffsetY) + object.image.height)) {
-            document.getElementById('firstContent').style.visibility = 'visible';
-            pause = true;
-        }
+    for (var i = 0; i < objectContainer.length; i++) {
+        var object = objectContainer[i];
+
+        if (checkHitboxCollision(mainChar, object)){
+	        if ((event.pageX) > object.x - bgOffsetX
+		         && event.pageX < ((object.x - bgOffsetX) + object.image.width)
+		         && (event.pageY) > object.y - bgOffsetY
+		         && event.pageY < ((object.y - bgOffsetY) + object.image.height)) {
+	            document.getElementById('firstContent').style.visibility = 'visible';
+	            pause = true;
+	        }
+	    }
     }
 }
 
