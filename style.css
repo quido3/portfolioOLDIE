@@ -35,6 +35,12 @@ div.contentDiv {
         border-width: 10px;
     }
 
+    div#skillsContent div.content{
+        background-color: orange;
+        font-family:"Lucida Console";
+        font-size: 30px;
+    }
+
 .exitBtn {
     float: right;
     -moz-box-shadow: inset 0px 1px 0px 0px #fbafe3;

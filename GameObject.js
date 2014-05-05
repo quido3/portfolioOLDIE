@@ -1,4 +1,5 @@
-function gameObject(x, y, img, hitboxImg, hX, hY){
+function gameObject(name, x, y, img, hitboxImg, hX, hY){
+	this.name = name;
 	this.image = img;
 	this.x = x;
 	this.y = y;
