@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <head>
-
-<link rel="stylesheet" type="text/css" href="style.css" />
-<script src="GameObject.js"></script>
-<script src="Engine.js"></script>
-
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script src="GameObject.js"></script>
+	<script src="Engine.js"></script>
 </head>
 <body>
-<p></p>
   <p id="debug"></p>
-  <canvas onmousemove="move(event)" id="viewport" width="800" height="600">
+  <canvas onmousemove="move(event)" id="viewport" onmousedown="checkClickOnObjects(event)" >
   </canvas>
+
+  
+
+  <div class="contentDiv" id="firstContent">
+        <div class="content">
+            <p class="exitBtn" onmousedown="hideContent(event)">exit<div class="exitBG"></div></p>
+            kissat koiria
+        </div>
+    </div>
 </body>
 </html>
