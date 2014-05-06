@@ -5,10 +5,8 @@
     <script src="Engine.js"></script>
 </head>
 <body>
-
-    <canvas onmousemove="move(event)" onmousedown="checkClickOnObjects(event)" id="viewport" width="800" height="600"></canvas>
     <p id="debug"></p>
-
+    <canvas onmousemove="move(event)" id="viewport" onmousedown="checkClickOnObjects(event)"></canvas>
     <div class="contentDiv" id="firstContent">
         <div class="content">
             <p class="exitBtn" onmousedown="hideContent(event)">exit<div class="exitBG"></div></p>
@@ -59,6 +57,13 @@
                         I hope that you enjoy your visit here!
                     </p>
                     <hr />
+        </div>
+    </div>
+    <div class="contentDiv" id="skillsContent">
+        <div class="content">
+            <p class="exitBtn" onmousedown="hideContent(event)">exit<div class="exitBG"></div></p>
+            skillz that kills: osaan avata sähkö postin
+            <img src="talo.png" />
         </div>
     </div>
 </body>

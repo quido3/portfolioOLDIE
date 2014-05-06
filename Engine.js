@@ -14,7 +14,7 @@ talo.src = "talo.png";
 var taloOvi = new Image();
 taloOvi.src = "talo_ovi.png";
 
-var mainChar = new gameObject(400, 400, mainCharacterImage);
+var mainChar = new gameObject("hero", 400, 400, mainCharacterImage);
 var objectContainer = new Array();
 
 var startX = 50;
@@ -27,14 +27,17 @@ var pause = false;
 
 background.onload=function(){
 
-	objectContainer[0] = new gameObject(500
+	objectContainer[0] = new gameObject("mill"
+										, 500
 									    , 0
 									    , mill
 									    , millDoor
 									    , (mill.width / 2) - (millDoor.width / 2)
 									    , mill.height - millDoor.height);
 
-	objectContainer[1] = new gameObject(500
+
+	objectContainer[1] = new gameObject("talo"
+										, 500
 										, 750
 										, talo
 										, taloOvi
@@ -202,7 +205,13 @@ function checkClickOnObjects(event) {
 		         && event.pageX < ((object.x - bgOffsetX) + object.image.width)
 		         && (event.pageY) > object.y - bgOffsetY
 		         && event.pageY < ((object.y - bgOffsetY) + object.image.height)) {
-	            document.getElementById('firstContent').style.visibility = 'visible';
+
+	        	if (object.name == "mill"){
+	        		document.getElementById('firstContent').style.visibility = 'visible';
+	        	} else if (object.name == "talo"){
+	        		document.getElementById('skillsContent').style.visibility = 'visible';
+	        	}
+	            
 	            pause = true;
 	        }
 	    }
