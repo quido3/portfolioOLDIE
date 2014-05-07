@@ -25,9 +25,9 @@ var ctx;
 
 var pause = false;
 
-background.onload=function(){
+background.onload = function () {
 
-	objectContainer[0] = new gameObject("mill"
+    objectContainer[0] = new gameObject("mill"
 										, 500
 									    , 0
 									    , mill
@@ -36,7 +36,7 @@ background.onload=function(){
 									    , mill.height - millDoor.height);
 
 
-	objectContainer[1] = new gameObject("talo"
+    objectContainer[1] = new gameObject("talo"
 										, 500
 										, 750
 										, talo
@@ -44,8 +44,8 @@ background.onload=function(){
 										, (talo.width / 2) - (taloOvi.width / 2)
 										, talo.height - taloOvi.height);
 
-	c = document.getElementById("viewport");
-	ctx = c.getContext("2d");
+    c = document.getElementById("viewport");
+    ctx = c.getContext("2d");
     width = window.innerWidth;
     height = window.innerHeight;
     document.getElementsByTagName("canvas")[0].setAttribute("width", width);
@@ -55,7 +55,7 @@ background.onload=function(){
     redraw();
 }
 
-window.onresize=function(){
+window.onresize = function () {
     ctx.clearRect(0, 0, width, height);
     width = window.innerWidth;
     height = window.innerHeight;
@@ -65,18 +65,18 @@ window.onresize=function(){
 }
 
 var moveTimer;
-function move(event){
-	var xPos = event.pageX;
-	var yPos = event.pageY;
+function move(event) {
+    var xPos = event.pageX;
+    var yPos = event.pageY;
 
-	clearInterval(moveTimer);
-	moveTimer = 0;
-	if (!moveTimer){
-		moveTimer = setInterval(
-			function(){
-				moveMainChar(xPos, yPos)
+    clearInterval(moveTimer);
+    moveTimer = 0;
+    if (!moveTimer) {
+        moveTimer = setInterval(
+			function () {
+			    moveMainChar(xPos, yPos)
 			}, 5);
-	}
+    }
 }
 
 var dirX;
@@ -86,113 +86,113 @@ var previousX;
 var previousY;
 var intervalX;
 var intervalY;
-function moveMainChar(x, y){
-	if (!pause){
-		previousX = mainChar.x;
-		previousY = mainChar.y;
+function moveMainChar(x, y) {
+    if (!pause) {
+        previousX = mainChar.x;
+        previousY = mainChar.y;
 
-		mainChar.x += (x - mainChar.x) * amount;
-		mainChar.y += (y - mainChar.y) * amount;
+        mainChar.x += (x - mainChar.x) * amount;
+        mainChar.y += (y - mainChar.y) * amount;
 
-		redraw(x, y);
-	}
+        redraw(x, y);
+    }
 }
 
 var bgOffsetX = 0;
 var bgOffsetY = 0;
 var scrollThreshold = 200;
-function redraw(x, y){
-	ctx.clearRect(0, 0, width, height);
+function redraw(x, y) {
+    ctx.clearRect(0, 0, width, height);
 
-	scrollBackground();
+    scrollBackground();
 
-	bgOffsetX < 0 ? bgOffsetX = 0 : bgOffsetX = bgOffsetX;
-	bgOffsetY < 0 ? bgOffsetY = 0 : bgOffsetY = bgOffsetY;
+    bgOffsetX < 0 ? bgOffsetX = 0 : bgOffsetX = bgOffsetX;
+    bgOffsetY < 0 ? bgOffsetY = 0 : bgOffsetY = bgOffsetY;
 
-	ctx.drawImage(background, bgOffsetX, bgOffsetY, width, height, 0, 0, width, height);
+    ctx.drawImage(background, bgOffsetX, bgOffsetY, width, height, 0, 0, width, height);
 
-	for (var i = 0; i < objectContainer.length; i++){
-		var temp = objectContainer[i];
-		drawObjectImage(temp);
-		drawObjectHitbox(temp);
+    for (var i = 0; i < objectContainer.length; i++) {
+        var temp = objectContainer[i];
+        drawObjectImage(temp);
+        drawObjectHitbox(temp);
 
-		if (checkHitboxCollision(mainChar, temp)){
-			// DO SOMETHING	
-		}
+        if (checkHitboxCollision(mainChar, temp)) {
+            // DO SOMETHING	
+        }
 
-		ctx.beginPath();
-		ctx.moveTo(temp.bBoxX - bgOffsetX,
+        ctx.beginPath();
+        ctx.moveTo(temp.bBoxX - bgOffsetX,
 				   temp.bBoxY - bgOffsetY);
-		ctx.lineTo(temp.bBoxX + temp.bBoxWidth - bgOffsetX,
+        ctx.lineTo(temp.bBoxX + temp.bBoxWidth - bgOffsetX,
 				   temp.bBoxY - bgOffsetY);
-		ctx.lineTo(temp.bBoxX + temp.bBoxWidth - bgOffsetX,
+        ctx.lineTo(temp.bBoxX + temp.bBoxWidth - bgOffsetX,
 				   temp.bBoxY + temp.bBoxHeight - bgOffsetY);
-		ctx.lineTo(temp.bBoxX - bgOffsetX,
+        ctx.lineTo(temp.bBoxX - bgOffsetX,
 				   temp.bBoxY + temp.bBoxHeight - bgOffsetY);
-		ctx.lineTo(temp.bBoxX - bgOffsetX,
+        ctx.lineTo(temp.bBoxX - bgOffsetX,
 				   temp.bBoxY - bgOffsetY);
-		ctx.stroke();
-	}
+        ctx.stroke();
+    }
 
-	ctx.drawImage(mainChar.image,
+    ctx.drawImage(mainChar.image,
                   mainChar.x,
                   mainChar.y);
 
-	for (var i = 0; i < objectContainer.length; i++){
-		if (checkCollision(mainChar, objectContainer[i])){
-			mainChar.x = previousX;
-			mainChar.y = previousY;
-		}
-	}
+    for (var i = 0; i < objectContainer.length; i++) {
+        if (checkCollision(mainChar, objectContainer[i])) {
+            mainChar.x = previousX;
+            mainChar.y = previousY;
+        }
+    }
 }
 
-function scrollBackground(){
-	if ((mainChar.x + mainChar.width) > (width - scrollThreshold)){
-		bgOffsetX++;
-	} else if (mainChar.x < scrollThreshold){
-		bgOffsetX--;
-	}
+function scrollBackground() {
+    if ((mainChar.x + mainChar.width) > (width - scrollThreshold)) {
+        bgOffsetX++;
+    } else if (mainChar.x < scrollThreshold) {
+        bgOffsetX--;
+    }
 
-	if ((mainChar.y + mainChar.height) > (height - scrollThreshold)){
-		bgOffsetY++;
-	} else if (mainChar.y < scrollThreshold) {
-		bgOffsetY--;
-	}
+    if ((mainChar.y + mainChar.height) > (height - scrollThreshold)) {
+        bgOffsetY++;
+    } else if (mainChar.y < scrollThreshold) {
+        bgOffsetY--;
+    }
 }
 
-function drawObjectImage(object){
-	ctx.drawImage(object.image, 
+function drawObjectImage(object) {
+    ctx.drawImage(object.image,
 				  object.x - bgOffsetX,
 				  object.y - bgOffsetY);
 }
 
-function drawObjectHitbox(object){
-	ctx.drawImage(object.hitbox,
+function drawObjectHitbox(object) {
+    ctx.drawImage(object.hitbox,
 				  object.hitboxX - bgOffsetX,
 				  object.hitboxY - bgOffsetY);
 }
 
-function checkCollision(hero, object){
+function checkCollision(hero, object) {
 
     if ((hero.x + hero.image.width) > object.x - bgOffsetX
          && hero.x < ((object.x - bgOffsetX) + object.image.width)
          && (hero.y + hero.image.width) > object.y - bgOffsetY
-         && hero.y < ((object.y - bgOffsetY) + object.image.height)){
-      	return true;
+         && hero.y < ((object.y - bgOffsetY) + object.image.height)) {
+        return true;
     } else {
-      return false;
+        return false;
     }
 }
 
-function checkHitboxCollision(hero, object){
+function checkHitboxCollision(hero, object) {
 
-	if ((hero.x + hero.image.width) > (object.bBoxX - bgOffsetX)
+    if ((hero.x + hero.image.width) > (object.bBoxX - bgOffsetX)
          && hero.x < ((object.bBoxX - bgOffsetX) + object.bBoxWidth)
          && (hero.y + hero.image.width) > object.bBoxY - bgOffsetY
-         && hero.y < ((object.bBoxY - bgOffsetY) + object.bBoxHeight)){
-      return true;
+         && hero.y < ((object.bBoxY - bgOffsetY) + object.bBoxHeight)) {
+        return true;
     } else {
-      return false;
+        return false;
     }
 }
 
@@ -200,21 +200,21 @@ function checkClickOnObjects(event) {
     for (var i = 0; i < objectContainer.length; i++) {
         var object = objectContainer[i];
 
-        if (checkHitboxCollision(mainChar, object)){
-	        if ((event.pageX) > object.x - bgOffsetX
+        if (checkHitboxCollision(mainChar, object)) {
+            if ((event.pageX) > object.x - bgOffsetX
 		         && event.pageX < ((object.x - bgOffsetX) + object.image.width)
 		         && (event.pageY) > object.y - bgOffsetY
 		         && event.pageY < ((object.y - bgOffsetY) + object.image.height)) {
 
-	        	if (object.name == "mill"){
-	        		document.getElementById('firstContent').style.visibility = 'visible';
-	        	} else if (object.name == "talo"){
-	        		document.getElementById('skillsContent').style.visibility = 'visible';
-	        	}
-	            
-	            pause = true;
-	        }
-	    }
+                if (object.name == "mill") {
+                    document.getElementById('worksContent').style.visibility = 'visible';
+                } else if (object.name == "talo") {
+                    document.getElementById('skillsContent').style.visibility = 'visible';
+                }
+
+                pause = true;
+            }
+        }
     }
 }
 
