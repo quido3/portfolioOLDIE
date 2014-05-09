@@ -93,6 +93,10 @@ div.contentDiv {
     font-size: 30px;
 }
 
+#cvContent div.content {
+    background-color: orange;
+}
+
 .exitBtn {
     float: right;
     -moz-box-shadow: inset 0px 1px 0px 0px #fbafe3;
