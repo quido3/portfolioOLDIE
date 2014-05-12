@@ -97,6 +97,15 @@ div.contentDiv {
     background-color: orange;
 }
 
+#expContent div.content {
+    background-color: gray;
+    font-family: Arial;
+    font-size: 18px;
+    border: solid;
+    border-color: black;
+    border-width: 10px;
+}
+
 .exitBtn {
     float: right;
     -moz-box-shadow: inset 0px 1px 0px 0px #fbafe3;
