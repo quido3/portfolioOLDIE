@@ -17,7 +17,7 @@ canvas {
 div.contentDiv {
     margin: 0px;
     position: absolute;
-    visibility: visible;
+    visibility: hidden;
     top: 0;
     left: 0;
     width: 100%;

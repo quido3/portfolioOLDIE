@@ -18,6 +18,7 @@
 			
 			<div id="content">
 				<br />
+				You can delete one message at the time.
 				<br />
 				<?php 
 					require_once('conf/config.php'); 
@@ -35,7 +36,7 @@
 
 					//Haun tulos julki
 					print '<form method="get" action="contacts.php" >';
-					print '<input type="submit" name="button" value="Poista valitut" />';
+					print '<input type="submit" name="button" value="Delete" />';
 					print '<br />';
 					
 					if (isset($_GET['button'])) {

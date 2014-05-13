@@ -296,3 +296,9 @@ function hideContent(event) {
     source.parentNode.parentNode.style.visibility = 'hidden';
     pause = false;
 }
+
+function hideContact(event) {
+    var source = event.target || event.srcElement;
+    source.parentNode.parentNode.parentNode.style.visibility = 'hidden';
+    pause = false;
+}

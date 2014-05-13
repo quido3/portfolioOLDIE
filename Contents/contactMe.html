@@ -1,8 +1,8 @@
 <div class="contentDiv" id="contactContent">
-    <div class="contact">
+    <div class="content">
         <p class="exitBtn" onmousedown="hideContent(event)">exit<div class="exitBG"></div></p>
-        <h1>Yhteydenotto</h1>
-        <form method="get" action="contact.php">
+        <h1>Contact</h1>
+        <form method="get" action="contact.php" target="_blank">
             <p>Name: <br /><input type="text" size="30" name="name" /><br />
             <p>Email: <br /><input type="text" size="30" name="email" /><br />
             <p>Telephone: <br /><input type="text" size="30" name="tel" /><br />
@@ -13,7 +13,7 @@
                 Reply?: <input type="checkbox" name="reply" value="1" /><br />
             </p>
             <p>
-                <input type="submit" name="painike1" value="Lähetä" />
+                <input onclick="hideContact(event)" type="submit" name="painike1" value="Send" />
             </p>
         </form>
         <hr />
