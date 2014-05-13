@@ -117,8 +117,7 @@ div.contentDiv {
     }
 
 #gallery {
-    visibility: visible;
-    overflow-x: visible;
+    overflow-x: hidden;
     overflow-y: hidden;
     width: 90%;
     height: 80%;
