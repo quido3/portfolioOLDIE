@@ -282,7 +282,7 @@ function checkClickOnObjects(event) {
 	        	} else if (object.name == "talo"){
 	        		document.getElementById('skillsContent').style.visibility = 'visible';
 	        	} else if (object.name == "board"){
-	        		document.getElementById('instructionsContent').style.visibility = 'visible';
+	        		document.getElementById('contactContent').style.visibility = 'visible';
 	        	}
 	            
 	            pause = true;

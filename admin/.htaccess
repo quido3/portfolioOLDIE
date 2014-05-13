@@ -1,0 +1,4 @@
+AuthUserFile /home/study05/c2hlindf/public_html/admin/.htpasswd
+AuthName "Give username and password"
+AuthType Basic
+require valid-user

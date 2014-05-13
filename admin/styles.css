@@ -10,7 +10,11 @@ table {
 	width: 750px;
 	margin-left: auto;
 	margin-right: auto;
-	text-align: center;
+}
+
+table th{
+	text-align: left;
+	width: 90px;
 }
 
 #page {
@@ -42,14 +46,15 @@ table {
 	list-style: none;
 	float: left;
 	padding: 10px;
-	width: 240px;
+	width: 220px;
 	height: 50px;
 	text-align: center;
-	line-height: 50px;
+	line-height: 20px;
 }
 
 #navi li a{
-	background-color: #15df84;
+	background-color: #FFFFFF;
+	padding: 3px;
 	border: 1px solid;
 	list-style: none;
 }
@@ -58,6 +63,4 @@ table {
 	background-color: #123456;
 	width: 800px;
 	height: 60px;
-	*position: fixed;
-	*bottom: 0;
 }
