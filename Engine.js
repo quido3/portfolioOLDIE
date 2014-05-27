@@ -1,8 +1,8 @@
-var background = new Image();
-background.src = "images/grass.png";
-
 var mainCharacterImage = new Image();
 mainCharacterImage.src = "images/hero.png";
+
+var cave = new Image();
+cave.src = "images/cave.png";
 
 var mill = new Image();
 mill.src = "images/mylly.png";
@@ -28,6 +28,9 @@ princess.src = "images/princess.png";
 
 var mainChar = new gameObject("hero", 400, 400, mainCharacterImage);
 var objectContainer = new Array();
+
+var background = new Image();
+background.src = "images/grass.png";
 
 var startX = 100;
 var startY = 200;
@@ -79,6 +82,14 @@ background.onload=function(){
 										, 1250
 										, 750
 										, princess
+										, null
+										, 0
+										, 0);
+
+	objectContainer[5] = new gameObject("cave"
+										, background.width - cave.width
+										, 0
+										, cave
 										, null
 										, 0
 										, 0);
@@ -283,6 +294,8 @@ function checkClickOnObjects(event) {
 	        		document.getElementById('skillsContent').style.visibility = 'visible';
 	        	} else if (object.name == "board"){
 	        		document.getElementById('contactContent').style.visibility = 'visible';
+	        	} else if (object.name == "castle"){
+	        		document.getElementById('worksContent').style.visibility = 'visible';
 	        	}
 	            
 	            pause = true;
